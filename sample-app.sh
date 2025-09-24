@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-rm tempdir
+rm -rf tempdir
 docker stop samplerunning 2>/dev/null || true
 docker rm samplerunning 2>/dev/null || true
 

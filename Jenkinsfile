@@ -1,14 +1,28 @@
-node {
-    stage('Preparation') {
-        catchError(buildResult: 'SUCCESS') {
-            sh 'docker stop samplerunning'
-            sh 'docker rm samplerunning'
+pipeline {
+    agent any
+
+    triggers {
+        pollSCM('* * * * *')  // Poll every minute
+    }
+
+    stages {
+        stage('Preparation') {
+            steps {
+                catchError(buildResult: 'SUCCESS') {
+                    sh 'docker stop samplerunning'
+                    sh 'docker rm samplerunning'
+                }
+            }
         }
-    }
-    stage('Build') {
-        build 'BuildSampleApp'
-    }
-    stage('Results') {
-        build 'TestSampleApp'
+        stage('Build') {
+            steps {
+                build 'BuildSampleApp'
+            }
+        }
+        stage('Results') {
+            steps {
+                build 'TestSampleApp'
+            }
+        }
     }
 }
